@@ -23,7 +23,7 @@
         let value = parseInt(result.split(' ').pop());
         let primes = [];
         primes = findPrimes(value);
-        document.getElementById('prime').innerText = 'Rarity rank #' + primes;
+        document.getElementById('prime').innerText = 'Rarity rank #' + primes.length;
     }
 
     function getPrimes(max) {
