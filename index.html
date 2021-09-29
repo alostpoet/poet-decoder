@@ -127,7 +127,7 @@
     function readFile(event) {
         document.body.classList.add('loaded');
         let result = atob(event.target.result.match(/SS[a-zA-Z0-9=]+/g).pop());
-        document.getElementById('poetMessage').innerText = result;
+        document.getElementById('poetMessage').innerText = "Your poet told me: '" + result + "'";
         document.getElementById('num').innerText = result.split(' ').pop();
 
         let value = parseInt(result.split(' ').pop());
