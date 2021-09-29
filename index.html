@@ -51,9 +51,13 @@
         #poetRarity {
             opacity: 0;
             transition: opacity .2s ease;
+            font-size: 16px;
+            line-height: 1.2em;
+            background: rgba(0,0,0,.4);
+            border-radius: 10px;
         }
 
-        .loaded #poetRarity {
+        .step3 #poetRarity {
             opacity: 1;
         }
 
@@ -62,20 +66,20 @@
             font-style: italic;
             text-align: center;
             line-height: 1.8em;
+            color: #999;
         }
         a {
             color: #fff;
             text-decoration: none;
-            border-bottom: 2px dashed dodgerblue;
+            border-bottom: 2px double dodgerblue;
         }
         p.note {
             font-size: 14px;
             margin: 20px;
         }
         #poetMessage {
-            margin: 50px auto;
+            margin: 20px auto;
             font-weight: bolder;
-            font-style: italic;;
         }
         #counter {
             text-align: center;
@@ -83,6 +87,32 @@
         #counter a {
             text-decoration: none;
             border-bottom: none;
+        }
+
+        #step1,#step2,#step3,#step4 {
+            opacity: 0;
+            transition: opacity .8s ease-in;
+        }
+        .step0 #instructions,
+        .step0 #instructionMessage {
+            opacity: 0;
+        }
+        .hide #instructions,
+        .hide #instructions *,
+        .hide #instructionMessage {
+            height: 1px;
+        }
+        .step0 #step1 {
+            opacity: 1;
+        }
+        .step1 #step2 {
+            opacity: 1;
+        }
+        .step2 #step3 {
+            opacity: 1;
+        }
+        .step3 #step4 {
+            opacity: 1;
         }
     </style>
 </head>
@@ -93,19 +123,33 @@
         <p><a href="https://lostpoets.xyz">Lost Poets</a> contain hidden messages. <br>The <a href="https://opensea.io/assets/0x4b3406a41399c7fd2ba65cbc93697ad9e7ea61e5/16972">Poet socialite</a> talks with them to reveal their secrets to you.</p>
     </div>
 
-    <ol>
+    <ol id="instructions">
         <li>Click on your Poet's image at OpenSea and save the large image <br>(make sure it's the 1024x1024px version!)</li>
         <li>Click the "Browse" button and select your saved image: <input type="file"></li>
         <li>Your Poet's hidden message will appear</li>
     </ol>
 
     <div id="poetMessage">
-        <em>Follow the instructions above...</em>
+        <div id="instructionMessage">
+            <em>Follow the instructions above...</em>
+        </div>
+        <div id="step1">
+            <p>The Socialite notices the other Poet's presence.</p>
+        </div>
+        <div id="step2">
+            <p>They make eye contact. It asks: <em>What secrets do you hold?</em></p>
+        </div>
+        <div id="step3">
+
+        </div>
+        <div id="step4">
+            <button onclick="reset()">Try again / another</button>
+        </div>
     </div>
 
     <div id="poetRarity">
-        <strong>Total prime numbers between 1 and <span id="num"></span>: #<span id="rarity"></span></strong>
-        <p class="note">Some people called it a "rank" previously. This is speculative and unconfirmed. Do with it what you like, just don't add too much value to it.</p>
+        <p><strong>Bonus info: Total prime numbers between 1 and <span id="num"></span>: #<span id="rarity"></span></strong></p>
+        <p><em>This number does not mean anything as far as we know.</em></p>
     </div>
 
     <div id="broughtBy">
@@ -117,22 +161,44 @@
     </div>
 
     <div id="counter">
-        <a class="counter" href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Falostpoet.github.io%2Fpoet-decoder%2F&count_bg=%23006C96&title_bg=%23000000&icon=&icon_color=%23E7E7E7&title=Messagess+read+today+%2F+total&edge_flat=false"/></a>
+        <a class="counter" href="https://hits.seeyoufarm.com" target="_blank"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Falostpoet.github.io%2Fpoet-decoder%2F&count_bg=%23006C96&title_bg=%23000000&icon=&icon_color=%23E7E7E7&title=Conversations+today+%2F+total&edge_flat=false"/></a>
     </div>
 </div>
 
 <script>
     let input = document.querySelector('input[type=file]');
 
-    function readFile(event) {
-        document.body.classList.add('loaded');
-        let result = atob(event.target.result.match(/SS[a-zA-Z0-9=]+/g).pop());
-        document.getElementById('poetMessage').innerText = "Your poet told me: '" + result + "'";
-        document.getElementById('num').innerText = result.split(' ').pop();
+    function reset() {
+        window.location.reload();
+    }
 
-        let value = parseInt(result.split(' ').pop());
-        let primes = findPrimes(value);
-        document.getElementById('rarity').innerText = primes.length;
+    function executeSteps(steps) {
+        const base = 2000;
+        steps.forEach(step => {
+            setTimeout(() => {
+                document.body.classList.add('step' + step);
+            }, base * step);
+        });
+    }
+
+    function readFile(event) {
+        let steps = [2,3];
+        executeSteps(steps);
+
+        let result = atob(event.target.result.match(/SS[a-zA-Z0-9=]+/g).pop());
+
+        const msg = document.getElementById('step3');
+        if (result.indexOf('I see you') === -1) {
+            msg.innerHTML = '<p>Your Poet remained silent.</p>';
+            document.getElementById('poetRarity').innerHTML = `<p>It seems that the image you provided does not contain any hidden data. <br>Make sure you have uploaded the original 1024x1024 pixels Poet image.</p><p><strong>The Poet Socialite does not have friends in Origin places yet. Origins won't talk to it.</strong></p>`;
+        } else {
+            msg.innerHTML = `<p>The Poet whispered: <em>${result}</em></p>`;
+            document.getElementById('num').innerText = result.split(' ').pop();
+
+            let value = parseInt(result.split(' ').pop());
+            let primes = findPrimes(value);
+            document.getElementById('rarity').innerText = primes.length;
+        }
     }
 
     function findPrimes(n){
@@ -178,6 +244,13 @@
         var file = input.files[0];
         var reader = new FileReader();
         reader.addEventListener('load', readFile);
+        reader.addEventListener('progress', () => {
+            executeSteps([0,1]);
+
+            setTimeout(() => {
+                document.body.classList.add('hide');
+            }, 1);
+        });
         reader.readAsBinaryString(file);
     }
 
