@@ -12,12 +12,14 @@
             color: #fff;
             font-family: Arial, sans-serif;
             font-size: 24px;
+            line-height: 1.8em;
         }
         li {
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
         ol {
             margin: 40px 0;
+            line-height: 1.2em;
         }
         .container::before {
             content: "";
@@ -64,7 +66,7 @@
         a {
             color: #fff;
             text-decoration: none;
-            border-bottom: 2px dashed #fff;
+            border-bottom: 2px dashed dodgerblue;
         }
         p.note {
             font-size: 14px;
@@ -88,11 +90,11 @@
 
 <div class="container">
     <div id="info">
-        <p><a href="https://lostpoets.xyz">Lost Poets</a> contain hidden messages. Use this tool to decipher yours.</p>
+        <p><a href="https://lostpoets.xyz">Lost Poets</a> contain hidden messages. <br>The <a href="https://opensea.io/assets/0x4b3406a41399c7fd2ba65cbc93697ad9e7ea61e5/16972">Poet socialite</a> talks with them to reveal their secrets to you.</p>
     </div>
 
     <ol>
-        <li>Click on your Poet's image at OpenSea and save the large image</li>
+        <li>Click on your Poet's image at OpenSea and save the large image <br>(make sure it's the 1024x1024px version!)</li>
         <li>Click the "Browse" button and select your saved image: <input type="file"></li>
         <li>Your Poet's hidden message will appear</li>
     </ol>
@@ -102,16 +104,20 @@
     </div>
 
     <div id="poetRarity">
-        <strong>Highly speculative, "Rarity number": #<span id="rarity"></span></strong>
-        <p class="note">Do note that rarity rank is speculative at best. It's something the community came up with, I only made the process easier.</p>
+        <strong>Total prime numbers between 1 and <span id="num"></span>: #<span id="rarity"></span></strong>
+        <p class="note">Do note that this number is speculative at best. It's something the community came up with, I only made the process easier.</p>
     </div>
 
     <div id="broughtBy">
-        <p>Brought to you by the mysterious <a href="https://opensea.io/assets/0x4b3406a41399c7fd2ba65cbc93697ad9e7ea61e5/16972">Poet socialite &rarr;</a>. <br>Pay him a visit. Like his work ❤️. <br>He's sitting by the window, talking with other poets.</p>
+        <p>Brought to you by the mysterious <a href="https://opensea.io/assets/0x4b3406a41399c7fd2ba65cbc93697ad9e7ea61e5/16972">Poet socialite &rarr;</a>.
+            <br>Pay him a visit. Like his work ❤️.
+            <br>He's sitting by the window, wondering who his Origin will be.
+            <br>It's not dropped yet.
+        </p>
     </div>
 
     <div id="counter">
-        <a class="counter" href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Falostpoet.github.io%2Fpoet-decoder%2F&count_bg=%23006C96&title_bg=%23000000&icon=&icon_color=%23E7E7E7&title=Messagess+read&edge_flat=false"/></a>
+        <a class="counter" href="https://hits.seeyoufarm.com"><img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Falostpoet.github.io%2Fpoet-decoder%2F&count_bg=%23006C96&title_bg=%23000000&icon=&icon_color=%23E7E7E7&title=Messagess+read+today+%2F+total&edge_flat=false"/></a>
     </div>
 </div>
 
@@ -122,24 +128,11 @@
         document.body.classList.add('loaded');
         let result = atob(event.target.result.match(/SS[a-zA-Z0-9=]+/g).pop());
         document.getElementById('poetMessage').innerText = result;
+        document.getElementById('num').innerText = result.split(' ').pop();
 
         let value = parseInt(result.split(' ').pop());
         let primes = findPrimes(value);
         document.getElementById('rarity').innerText = primes.length;
-    }
-
-    function getPrimes(max) {
-        var sieve = [], i, j, primes = [];
-        for (i = 2; i <= max; ++i) {
-            if (!sieve[i]) {
-                // i has not been marked -- it is prime
-                primes.push(i);
-                for (j = i << 1; j <= max; j += i) {
-                    sieve[j] = true;
-                }
-            }
-        }
-        return primes;
     }
 
     function findPrimes(n){
