@@ -185,12 +185,12 @@
         let steps = [2,3];
         executeSteps(steps);
 
-        let result = atob(event.target.result.match(/SS[a-zA-Z0-9=]+/g).pop());
-
+        let result = atob(event.target.result.match(/(?:[a-zA-Z0-9+\/]{4})*(?:|(?:[a-zA-Z0-9+\/]{3}=)|(?:[a-zA-Z0-9+\/]{2}==)|(?:[a-zA-Z0-9+\/]{1}===))$/g)[0]);
         const msg = document.getElementById('step3');
-        if (result.indexOf('I see you') === -1) {
+        console.log(result);
+        if (result.length < 5) {
             msg.innerHTML = '<p>Your Poet remained silent.</p>';
-            document.getElementById('poetRarity').innerHTML = `<p>It seems that the image you provided does not contain any hidden data. <br>Make sure you have uploaded the original 1024x1024 pixels Poet image.</p><p><strong>The Poet Socialite does not have friends in Origin places yet. Origins won't talk to it.</strong></p>`;
+            document.getElementById('poetRarity').innerHTML = `<p>It seems that the image you provided does not contain any hidden data. <br>Make sure you have uploaded the original 1024x1024 pixels Poet image.</p>`;
         } else {
             msg.innerHTML = `<p>The Poet whispered: <em>${result}</em></p>`;
             document.getElementById('num').innerText = result.split(' ').pop();
