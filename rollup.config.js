@@ -41,7 +41,9 @@ const config = {
         },
         {
             file: './dist/app.min.js',
-            plugins: [terser()]
+            plugins: [terser({
+                keep_classnames: true
+            })]
         }
     ],
     inlineDynamicImports: true,
