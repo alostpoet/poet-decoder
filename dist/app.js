@@ -1,4 +1,4 @@
-export class Decoder {
+class Decoder {
         _file; _input; _reader;
         static BASE64REG = /(?:[a-zA-Z0-9+\/]{4})*(?:|(?:[a-zA-Z0-9+\/]{3}=)|(?:[a-zA-Z0-9+\/]{2}==)|(?:[a-zA-Z0-9+\/]{1}===))$/g;
         constructor() {
@@ -125,3 +125,5 @@ export class Decoder {
             return result;
         }
     }
+
+export { Decoder };

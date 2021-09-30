@@ -1,0 +1,30 @@
+{
+  "name": "poet-decoder",
+  "version": "1.0.0",
+  "description": "Reveal your Poet's secrets.",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "NODE_ENV=production npx rollup -c",
+    "watch": "npx rollup -cw"
+  },
+  "devDependencies": {
+    "rollup": "^2.56.2",
+    "@rollup/plugin-node-resolve": "^13.0.4",
+    "@rollup/plugin-replace": "^3.0.0",
+    "rollup-plugin-replace-html-vars": "^1.0.3",
+    "rollup-plugin-serve": "^1.1.0",
+    "rollup-plugin-terser": "^7.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://rvanbaalen@github.com/alostpoet/poet-decoder.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/alostpoet/poet-decoder/issues"
+  },
+  "homepage": "https://poet-decoder.alostpoet.xyz"
+}
